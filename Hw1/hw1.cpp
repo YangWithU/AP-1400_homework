@@ -32,9 +32,11 @@ namespace algebra {
         Matrix res(n, std::vector<double>(m));
         std::mt19937_64 seed(std::chrono::steady_clock::now().time_since_epoch().count());
         std::uniform_real_distribution<double> rand_num(min, max);
-        std::for_each(res.begin(), res.end(), [&](auto &cur) {
-            std::fill(cur.begin(), cur.end(), rand_num(seed));
-        });
+        for(auto &rows : res) {
+            for(auto &num : rows) {
+                num = rand_num(seed);
+            }
+        }
         return res;
     }
 
@@ -48,5 +50,27 @@ namespace algebra {
         }
     }
 
-    //Matrix multiply(const Matrix)
+    Matrix multiply(const Matrix& matrix, double c) {
+        Matrix res(matrix);
+        for(auto &rows : res) {
+            for(auto &num : rows) {
+                num = num * c;
+            }
+        }
+        return res;
+    }
+
+    Matrix multiply(const Matrix& matrix1, const Matrix& matrix2) {
+        Matrix res(matrix1.size(), std::vector<double>(matrix1.size()));
+        for(int i = 0; i < matrix1.size(); i++) {
+            for(int j = 0; j < matrix2[0].size(); j++) {
+                for(int k = 0; k < matrix1[0].size(); k++) {
+                    res[i][j] += matrix1[i][k] * matrix2[k][j];
+                }
+            }
+        }
+        return res;
+    }
+
+
 }

@@ -30,10 +30,11 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) std::cerr << ", "; _prin
 #endif
 
 int main() {
-    auto x = algebra::zeros(5, 5);
-    algebra::show(x);
+    Matrix x = algebra::ones(3, 2);
+    Matrix y = algebra::random(2, 3, 1.0, 5.0);
+    algebra::show(y);
     std::cout << '\n';
-    x = algebra::random(5, 5, 1.1, 10.2);
-    algebra::show(x);
+    Matrix res = algebra::multiply(x, y);
+    algebra::show(res);
     return 0;
 }
