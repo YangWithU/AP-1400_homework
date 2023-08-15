@@ -48,5 +48,5 @@ namespace algebra {
         }
     }
 
-    Matrix multiply(const Matrix)
+    //Matrix multiply(const Matrix)
 }
