@@ -12,7 +12,7 @@ namespace algebra {
     }
 
     Matrix ones(std::size_t n, std::size_t m) {
-        Matrix res(n, std::vector<double>(m, 1));
+        Matrix res(n, std::vector<double>(m, 1.0));
         return res;
     }
 
@@ -23,8 +23,8 @@ namespace algebra {
      * @param max max val of random number filled in matrix
      *
      * firstly, create random seed, type: mt19937.
-     * secondly, create a distribution to fix range ordered
-     * finally, fill numbers in matrix
+     * secondly, create a distribution to make range ordered
+     * finally, fill the numbers into matrix
      *
      * @returns Matrix filled with random double numbers
      */
@@ -72,5 +72,51 @@ namespace algebra {
         return res;
     }
 
+    Matrix sum(const Matrix& matrix, double c) {
+        Matrix res(matrix);
+        for(auto &row : res) {
+            for(auto &cur : row) {
+                cur += c;
+            }
+        }
+        return res;
+    }
 
+    Matrix sum(const Matrix& matrix1, const Matrix& matrix2) {
+        Matrix res = algebra::zeros(matrix1.size(), matrix1[0].size());
+        for(int i = 0; i < matrix1.size(); i++) {
+            for(int j = 0; j < matrix1[0].size(); j++) {
+                res[i][j] = matrix1[i][j] + matrix2[i][j];
+            }
+        }
+        return res;
+    }
+
+    Matrix transpose(const Matrix& matrix) {
+        Matrix res(matrix[0].size(), std::vector<double>(matrix.size()));
+        for(int i = 0; i < matrix.size(); i++) {
+            for(int j = 0; j < matrix[0].size(); j++) {
+                res[j][i] = matrix[i][j];
+            }
+        }
+        return res;
+    }
+
+    Matrix minor(const Matrix& matrix, size_t n, size_t m) {
+        Matrix res(matrix.size() - 1, std::vector<double>(matrix[0].size() - 1));
+        int cur_row = 0, cur_col = 0;
+        for(int i = 0; i < matrix.size(); i++) {
+            for(int j = 0; j < matrix[0].size(); j++) {
+                if(i == n or j == m) continue;
+                res[cur_row][cur_col++] = matrix[i][j];
+            }
+            cur_col = 0;
+            if(i != n) cur_row++;
+        }
+        return res;
+    }
+
+    Matrix determinant(const Matrix& matrix) {
+
+    }
 }
