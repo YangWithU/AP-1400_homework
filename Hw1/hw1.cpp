@@ -41,7 +41,7 @@ namespace algebra {
     }
 
     void show(const Matrix& matrix) {
-        std::cout << std::fixed << std::setprecision(3);
+        //std::cout << std::fixed << std::setprecision(3);
         for(auto &rows : matrix) {
             for(auto &num : rows) {
                 std::cout << num << " ";
@@ -116,7 +116,15 @@ namespace algebra {
         return res;
     }
 
-    Matrix determinant(const Matrix& matrix) {
-
+    double determinant(const Matrix& matrix) {
+        if(matrix.size() == 2) {
+            return matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1];
+        }
+        double res = 0;
+        for(int i = 0; i < matrix[0].size(); i++) {
+            res += matrix[0][i] * determinant(minor(matrix, 0, i)) * (i % 2 == 0 ? 1 : -1);
+        }
+        return res;
     }
+
 }

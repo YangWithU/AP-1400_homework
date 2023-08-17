@@ -30,11 +30,12 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) std::cerr << ", "; _prin
 #endif
 
 int main() {
-    Matrix matrix = algebra::random(5, 5, 1.0, 5.0);
+    Matrix matrix = algebra::random(4, 4, 1.0, 20.0);
     algebra::show(matrix);
-    matrix = algebra::minor(matrix, 1, 1);
     std::cout << '\n';
-    algebra::show(matrix);
 
+    auto ans = algebra::determinant(matrix);
+
+    std::cout << ans;
     return 0;
 }
