@@ -7,7 +7,7 @@
 
 namespace algebra {
     Matrix zeros(std::size_t n, std::size_t m) {
-        Matrix res(n, std::vector<double>(m, 0));
+        Matrix res(n, std::vector<double>(m, 0.0));
         return res;
     }
 
@@ -143,7 +143,7 @@ namespace algebra {
         std::swap(matrix[row1], matrix[row2]);
     }
 
-    inline void rowMuiltiply(Matrix& matrix, int row, double scalar) {
+    inline void rowMultiply(Matrix& matrix, int row, double scalar) {
         for(auto &cur : matrix[row]) {
             cur *= scalar;
         }
@@ -156,13 +156,14 @@ namespace algebra {
     }
 
     Matrix inverse(const Matrix& matrix) {
-        Matrix res(matrix), identity;
+        Matrix res(matrix);
+        const auto n_size = matrix.size();
+
         if (matrix.size() != matrix[0].size()) {
             return Matrix{};
         }
 
-        auto n_size = matrix.size();
-        identity = createIdentity(n_size);
+        Matrix identity = createIdentity(n_size);
 
         // gaussian elimination
         for (int i = 0; i < n_size; i++) {
@@ -180,13 +181,13 @@ namespace algebra {
 
             // 3.shrink current row
             auto scalar = res[i][i];
-            rowMuiltiply(res, i, 1.0 / scalar);
-            rowMuiltiply(identity, i, 1.0 / scalar);
+            rowMultiply(res, i, 1.0 / scalar);
+            rowMultiply(identity, i, 1.0 / scalar);
 
             // 4.add
             for (int j = 0; j < n_size; j++) {
                 if (j != i) {
-                    auto multer = -matrix[j][i];
+                    auto multer = -res[j][i];
                     rowAdd(res, j, i, multer);
                     rowAdd(identity, j, i, multer);
                 }
@@ -194,5 +195,7 @@ namespace algebra {
         }
         return identity;
     }
+
+
 
 }
