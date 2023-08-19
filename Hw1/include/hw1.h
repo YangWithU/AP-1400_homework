@@ -18,6 +18,7 @@ namespace algebra {
     Matrix transpose(const Matrix& matrix);
     Matrix minor(const Matrix& matrix, std::size_t n, std::size_t m);
     double determinant(const Matrix& matrix);
+    Matrix inverse(const Matrix& matrix);
 
 }
 

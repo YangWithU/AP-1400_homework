@@ -1,4 +1,5 @@
 #include <iostream>
+#include <gtest/gtest.h>
 #include "hw1.h"
 
 void __print(int x) {std::cerr << x;}
@@ -34,8 +35,8 @@ int main() {
     algebra::show(matrix);
     std::cout << '\n';
 
-    auto ans = algebra::determinant(matrix);
+    matrix = algebra::inverse(matrix);
+    algebra::show(matrix);
 
-    std::cout << ans;
     return 0;
 }

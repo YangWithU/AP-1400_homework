@@ -61,7 +61,7 @@ namespace algebra {
     }
 
     Matrix multiply(const Matrix& matrix1, const Matrix& matrix2) {
-        Matrix res(matrix1.size(), std::vector<double>(matrix1.size()));
+        Matrix res(matrix1.size(), std::vector<double>(matrix2[0].size()));
         for(int i = 0; i < matrix1.size(); i++) {
             for(int j = 0; j < matrix2[0].size(); j++) {
                 for(int k = 0; k < matrix1[0].size(); k++) {
@@ -125,6 +125,74 @@ namespace algebra {
             res += matrix[0][i] * determinant(minor(matrix, 0, i)) * (i % 2 == 0 ? 1 : -1);
         }
         return res;
+    }
+
+    /**
+     * For matrix inverse use:
+     */
+
+    Matrix createIdentity(std::size_t size) {
+        Matrix res = algebra::zeros(size, size);
+        for(int i = 0; i < size; i++) {
+            res[i][i] = 1.0;
+        }
+        return res;
+    }
+
+    inline void swapRows(Matrix& matrix, int row1, int row2) {
+        std::swap(matrix[row1], matrix[row2]);
+    }
+
+    inline void rowMuiltiply(Matrix& matrix, int row, double scalar) {
+        for(auto &cur : matrix[row]) {
+            cur *= scalar;
+        }
+    }
+
+    inline void rowAdd(Matrix& matrix, int row1, int row2, double scalar) {
+        for(int i = 0; i < matrix[row1].size(); i++) {
+            matrix[row1][i] += matrix[row2][i] * scalar;
+        }
+    }
+
+    Matrix inverse(const Matrix& matrix) {
+        Matrix res(matrix), identity;
+        if (matrix.size() != matrix[0].size()) {
+            return Matrix{};
+        }
+
+        auto n_size = matrix.size();
+        identity = createIdentity(n_size);
+
+        // gaussian elimination
+        for (int i = 0; i < n_size; i++) {
+            // 1.find max row in current col
+            int mxRow = i;
+            for (int j = i + 1; j < n_size; j++) {
+                if (std::abs(res[j][i]) > std::abs(res[mxRow][i])) {
+                    mxRow = j;
+                }
+            }
+
+            // 2.swap max to current row to calculate
+            swapRows(res, i, mxRow);
+            swapRows(identity, i, mxRow);
+
+            // 3.shrink current row
+            auto scalar = res[i][i];
+            rowMuiltiply(res, i, 1.0 / scalar);
+            rowMuiltiply(identity, i, 1.0 / scalar);
+
+            // 4.add
+            for (int j = 0; j < n_size; j++) {
+                if (j != i) {
+                    auto multer = -matrix[j][i];
+                    rowAdd(res, j, i, multer);
+                    rowAdd(identity, j, i, multer);
+                }
+            }
+        }
+        return identity;
     }
 
 }

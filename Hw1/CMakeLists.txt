@@ -7,7 +7,7 @@ include_directories(include/)
 
 find_package(GTest REQUIRED)
 
-add_executable(Hw1 main.cpp hw1.cpp)
+add_executable(Hw1 main.cpp hw1.cpp unit_test.cpp)
 
 target_link_libraries(Hw1
         GTest::GTest
