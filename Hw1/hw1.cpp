@@ -117,6 +117,9 @@ namespace algebra {
     }
 
     double determinant(const Matrix& matrix) {
+        if(matrix.empty()) {
+            return 1;
+        }
         if(matrix.size() == 2) {
             return matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1];
         }
@@ -130,28 +133,29 @@ namespace algebra {
     /**
      * For matrix inverse use:
      */
-
-    Matrix createIdentity(std::size_t size) {
-        Matrix res = algebra::zeros(size, size);
-        for(int i = 0; i < size; i++) {
-            res[i][i] = 1.0;
+    namespace Inv {
+        Matrix createIdentity(std::size_t size) {
+            Matrix res = algebra::zeros(size, size);
+            for(int i = 0; i < size; i++) {
+                res[i][i] = 1.0;
+            }
+            return res;
         }
-        return res;
-    }
 
-    inline void swapRows(Matrix& matrix, int row1, int row2) {
-        std::swap(matrix[row1], matrix[row2]);
-    }
-
-    inline void rowMultiply(Matrix& matrix, int row, double scalar) {
-        for(auto &cur : matrix[row]) {
-            cur *= scalar;
+        inline void swapRows(Matrix& matrix, int row1, int row2) {
+            std::swap(matrix[row1], matrix[row2]);
         }
-    }
 
-    inline void rowAdd(Matrix& matrix, int row1, int row2, double scalar) {
-        for(int i = 0; i < matrix[row1].size(); i++) {
-            matrix[row1][i] += matrix[row2][i] * scalar;
+        inline void rowMultiply(Matrix& matrix, int row, double scalar) {
+            for(auto &cur : matrix[row]) {
+                cur *= scalar;
+            }
+        }
+
+        inline void rowAdd(Matrix& matrix, int row1, int row2, double scalar) {
+            for(int i = 0; i < matrix[row1].size(); i++) {
+                matrix[row1][i] += matrix[row2][i] * scalar;
+            }
         }
     }
 
@@ -163,7 +167,7 @@ namespace algebra {
             return Matrix{};
         }
 
-        Matrix identity = createIdentity(n_size);
+        Matrix identity = Inv::createIdentity(n_size);
 
         // gaussian elimination
         for (int i = 0; i < n_size; i++) {
@@ -176,20 +180,20 @@ namespace algebra {
             }
 
             // 2.swap max to current row to calculate
-            swapRows(res, i, mxRow);
-            swapRows(identity, i, mxRow);
+            Inv::swapRows(res, i, mxRow);
+            Inv::swapRows(identity, i, mxRow);
 
             // 3.shrink current row
             auto scalar = res[i][i];
-            rowMultiply(res, i, 1.0 / scalar);
-            rowMultiply(identity, i, 1.0 / scalar);
+            Inv::rowMultiply(res, i, 1.0 / scalar);
+            Inv::rowMultiply(identity, i, 1.0 / scalar);
 
             // 4.add
             for (int j = 0; j < n_size; j++) {
                 if (j != i) {
                     auto multer = -res[j][i];
-                    rowAdd(res, j, i, multer);
-                    rowAdd(identity, j, i, multer);
+                    Inv::rowAdd(res, j, i, multer);
+                    Inv::rowAdd(identity, j, i, multer);
                 }
             }
         }
@@ -214,5 +218,6 @@ namespace algebra {
         }
         return res;
     }
+
 
 }
