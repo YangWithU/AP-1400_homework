@@ -41,7 +41,7 @@ namespace algebra {
     }
 
     void show(const Matrix& matrix) {
-        //std::cout << std::fixed << std::setprecision(3);
+        std::cout << std::fixed << std::setprecision(3);
         for(auto &rows : matrix) {
             for(auto &num : rows) {
                 std::cout << num << " ";
@@ -196,6 +196,23 @@ namespace algebra {
         return identity;
     }
 
-
+    Matrix concatenate(const Matrix& matrix1, const Matrix& matrix2, int axis) {
+        Matrix res;
+        if(axis == 0) {
+            res = matrix1;
+            res.insert(res.end(), matrix2.begin(), matrix2.end());
+        } else {
+            int row = matrix1.size();
+            int col1 = matrix1[0].size(), col2 = matrix2[0].size();
+            for(int i = 0; i < row; i++) {
+                std::vector<double> v;
+                v.reserve(col1 + col2);
+                v.insert(v.end(), matrix1[i].begin(), matrix1[i].end());
+                v.insert(v.end(), matrix2[i].begin(), matrix2[i].end());
+                res.push_back(v);
+            }
+        }
+        return res;
+    }
 
 }

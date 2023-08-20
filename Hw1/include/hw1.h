@@ -19,6 +19,7 @@ namespace algebra {
     Matrix minor(const Matrix& matrix, std::size_t n, std::size_t m);
     double determinant(const Matrix& matrix);
     Matrix inverse(const Matrix& matrix);
+    Matrix concatenate(const Matrix& matrix1, const Matrix& matrix2, int axis=0);
 
 }
 
