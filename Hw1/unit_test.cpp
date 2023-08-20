@@ -3,7 +3,7 @@
 #include "gmock/gmock.h"
 #include "hw1.h"
 
-/*
+
 TEST(HW1Test, ZEROS) {
     Matrix matrix{algebra::zeros(5, 6)};
 
@@ -315,7 +315,7 @@ TEST(HW1Test, ERO_MULTIPLY) {
 
 TEST(HW1Test, ERO_SUM) {
     Matrix matrix{algebra::random(4, 3, 0, 4)};
-    Matrix ero{algebra::ero_sum(matrix, 0, 2, 3)};
+    Matrix ero{algebra::ero_sum(matrix, 0, 2.0, 3)};
 
     EXPECT_TRUE(ero[0] == matrix[0]);
     EXPECT_TRUE(ero[1] == matrix[1]);
@@ -360,6 +360,5 @@ TEST(HW1Test, BONUS) {
     EXPECT_NEAR(res2[2][1], 0, 0.03);
     EXPECT_NEAR(res2[2][2], 39/4.0, 0.03);
 }
-*/
 
 

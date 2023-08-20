@@ -206,8 +206,8 @@ namespace algebra {
             res = matrix1;
             res.insert(res.end(), matrix2.begin(), matrix2.end());
         } else {
-            int row = matrix1.size();
-            int col1 = matrix1[0].size(), col2 = matrix2[0].size();
+            auto row = matrix1.size();
+            auto col1 = matrix1[0].size(), col2 = matrix2[0].size();
             for(int i = 0; i < row; i++) {
                 std::vector<double> v;
                 v.reserve(col1 + col2);
@@ -219,5 +219,40 @@ namespace algebra {
         return res;
     }
 
+    Matrix ero_swap(const Matrix& matrix, std::size_t r1, std::size_t r2) {
+        Matrix res(matrix);
+        std::swap(res[r1], res[r2]);
+        return res;
+    }
+
+    Matrix ero_multiply(const Matrix& matrix, std::size_t r, double c) {
+        Matrix res(matrix);
+        for(auto &cur : res[r]) {
+            cur *= c;
+        }
+        return res;
+    }
+
+    Matrix ero_sum(const Matrix& matrix, std::size_t r1, double c, std::size_t r2) {
+        Matrix res(matrix);
+        for(auto &cur : res[r1]) {
+            cur *= c;
+        }
+        for(int i = 0; i < res[r2].size(); i++) {
+            res[r2][i] += res[r1][i];
+        }
+        return res;
+    }
+
+    Matrix upper_triangular(const Matrix &matrix) {
+        Matrix res(matrix);
+        for(int i = 0; i < res.size(); i++) {
+            for(int j = i + 1; j < res.size(); j++) {
+                double scalar = -res[i][i];
+                res = ero_sum(res, i, res[j][i] / scalar, j);
+            }
+        }
+        return res;
+    }
 
 }

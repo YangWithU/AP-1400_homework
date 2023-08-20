@@ -20,6 +20,10 @@ namespace algebra {
     double determinant(const Matrix& matrix);
     Matrix inverse(const Matrix& matrix);
     Matrix concatenate(const Matrix& matrix1, const Matrix& matrix2, int axis=0);
+    Matrix ero_swap(const Matrix& matrix, std::size_t r1, std::size_t r2);
+    Matrix ero_multiply(const Matrix& matrix, std::size_t r, double c);
+    Matrix ero_sum(const Matrix& matrix, std::size_t r1, double c, std::size_t r2);
+    Matrix upper_triangular(const Matrix &matrix);
 
 }
 
