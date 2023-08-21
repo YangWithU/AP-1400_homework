@@ -5,9 +5,12 @@
 int main() {
     if (false) // make false to run unit tests
     {
-        Matrix x{}, y{};
-        if(x.empty()) std::cout << "yes\n";
-        auto res = algebra::multiply(x, y);
+        Matrix x = algebra::random(3, 3, 1.0, 3.0);
+        algebra::show(x);
+        Matrix y = algebra::random(3, 3, 1.0, 3.0);
+        algebra::show(y);
+        std::cout << '\n';
+        auto res = algebra::sum(x, y);
         algebra::show(res);
     }
     else

@@ -94,7 +94,18 @@ namespace algebra {
     }
 
     Matrix sum(const Matrix& matrix1, const Matrix& matrix2) {
-        Matrix res = algebra::zeros(matrix1.size(), matrix1[0].size());
+        Matrix res{};
+        if(matrix1.empty() or matrix2.empty()) {
+            if(matrix1.empty() and matrix2.empty()) {
+                return res;
+            } else {
+                throw std::logic_error("size incomplete!");
+            }
+        }
+        if(matrix1.size() != matrix2.size() or matrix1[0].size() != matrix2[0].size()) {
+            throw std::logic_error("size incomplete!");
+        }
+        res.resize(matrix1.size(), std::vector<double>(matrix1[0].size()));
         for(int i = 0; i < matrix1.size(); i++) {
             for(int j = 0; j < matrix1[0].size(); j++) {
                 res[i][j] = matrix1[i][j] + matrix2[i][j];
@@ -104,7 +115,11 @@ namespace algebra {
     }
 
     Matrix transpose(const Matrix& matrix) {
-        Matrix res(matrix[0].size(), std::vector<double>(matrix.size()));
+        Matrix res{};
+        if(matrix.empty()) {
+            return res;
+        }
+        res.resize(matrix[0].size(), std::vector<double>(matrix.size()));
         for(int i = 0; i < matrix.size(); i++) {
             for(int j = 0; j < matrix[0].size(); j++) {
                 res[j][i] = matrix[i][j];
