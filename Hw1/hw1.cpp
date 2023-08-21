@@ -70,7 +70,7 @@ namespace algebra {
             return res;
         }
         if(matrix1[0].size() != matrix2.size()) {
-            throw std::logic_error("size of two matrix error!");
+            throw std::logic_error("size of two matrix unequal!");
         }
         res.resize(matrix1.size(), std::vector<double>(matrix2[0].size()));
         for(int i = 0; i < matrix1.size(); i++) {
@@ -145,6 +145,9 @@ namespace algebra {
     double determinant(const Matrix& matrix) {
         if(matrix.empty()) {
             return 1;
+        }
+        if(matrix.size() != matrix[0].size()) {
+            throw std::logic_error("error matrix size(must be square)");
         }
         if(matrix.size() == 2) {
             return matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1];
@@ -227,7 +230,7 @@ namespace algebra {
     }
 
     Matrix concatenate(const Matrix& matrix1, const Matrix& matrix2, int axis) {
-        Matrix res;
+        Matrix res{};
         if(axis == 0) {
             res = matrix1;
             res.insert(res.end(), matrix2.begin(), matrix2.end());
