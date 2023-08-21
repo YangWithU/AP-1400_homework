@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
+#include <stdexcept>
 
 namespace algebra {
     Matrix zeros(std::size_t n, std::size_t m) {
@@ -29,6 +30,9 @@ namespace algebra {
      * @returns Matrix filled with random double numbers
      */
     Matrix random(std::size_t n, std::size_t m, double min, double max) {
+        if(min > max) {
+            throw std::logic_error("min value can not greater than max!");
+        }
         Matrix res(n, std::vector<double>(m));
         std::mt19937_64 seed(std::chrono::steady_clock::now().time_since_epoch().count());
         std::uniform_real_distribution<double> rand_num(min, max);
@@ -61,7 +65,14 @@ namespace algebra {
     }
 
     Matrix multiply(const Matrix& matrix1, const Matrix& matrix2) {
-        Matrix res(matrix1.size(), std::vector<double>(matrix2[0].size()));
+        Matrix res{};
+        if(matrix1.empty() or matrix2.empty()) {
+            return res;
+        }
+        if(matrix1[0].size() != matrix2.size()) {
+            throw std::logic_error("size of two matrix error!");
+        }
+        res.resize(matrix1.size(), std::vector<double>(matrix2[0].size()));
         for(int i = 0; i < matrix1.size(); i++) {
             for(int j = 0; j < matrix2[0].size(); j++) {
                 for(int k = 0; k < matrix1[0].size(); k++) {
