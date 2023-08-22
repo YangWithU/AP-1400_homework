@@ -3,14 +3,12 @@
 #include "hw1.h"
 
 int main() {
-    if (true) // make false to run unit tests
+    if (false) // make false to run unit tests
     {
-        Matrix matrix{{1, 2}};
-        auto res = algebra::ero_swap(matrix, 0, 1);
+        Matrix matrix{{1, 2, 3}, {4, 7, 5}, {6, 1, 3}};
+        auto res = algebra::upper_triangular(matrix);
 //        std::cout << res;
-        auto sz = matrix.size();
         algebra::show(res);
-        std::cout << sz;
     }
     else
     {

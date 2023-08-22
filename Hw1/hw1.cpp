@@ -283,23 +283,44 @@ namespace algebra {
 
     Matrix ero_sum(const Matrix& matrix, std::size_t r1, double c, std::size_t r2) {
         Matrix res(matrix);
-        for(auto &cur : res[r1]) {
-            cur *= c;
+        std::vector<double> cur_row(matrix[0].size());
+        for(int i = 0; i < matrix[0].size(); i++) {
+            cur_row[i] = res[r1][i] * c;
         }
         for(int i = 0; i < res[r2].size(); i++) {
-            res[r2][i] += res[r1][i];
+            res[r2][i] += cur_row[i];
         }
         return res;
     }
 
     Matrix upper_triangular(const Matrix &matrix) {
+        if(matrix.empty()) {
+            return matrix;
+        }
+        if(matrix.size() != matrix[0].size()) {
+            throw std::logic_error("error matrix size(must be square)");
+        }
         Matrix res(matrix);
         for(int i = 0; i < res.size(); i++) {
+            // 1. find non-zero element
+            if(res[i][i] == 0) {
+                // 2. find main(non-zero)
+                int nzero_row = i;
+                for(int j = i + 1; j < res.size(); j++) {
+                    if(res[j][i] != 0) {
+                        nzero_row = j;
+                        break;
+                    }
+                }
+                res = ero_swap(res, i, nzero_row);
+            }
+            // 3.eliminate
             for(int j = i + 1; j < res.size(); j++) {
-                double scalar = -res[i][i];
-                res = ero_sum(res, i, res[j][i] / scalar, j);
+                double scalar = -res[j][i] / res[i][i];
+                res = ero_sum(res, i, scalar, j);
             }
         }
+
         return res;
     }
 
