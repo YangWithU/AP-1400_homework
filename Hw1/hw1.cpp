@@ -190,6 +190,16 @@ namespace algebra {
 
     Matrix inverse(const Matrix& matrix) {
         Matrix res(matrix);
+        if(res.empty()) {
+            return res;
+        }
+        if(res.size() != res[0].size()) {
+            throw std::logic_error("error matrix size(must be square)");
+        }
+        if(determinant(res) == 0) {
+            throw std::logic_error("singular matrix");
+        }
+
         const auto n_size = matrix.size();
 
         if (matrix.size() != matrix[0].size()) {
@@ -232,9 +242,15 @@ namespace algebra {
     Matrix concatenate(const Matrix& matrix1, const Matrix& matrix2, int axis) {
         Matrix res{};
         if(axis == 0) {
+            if(matrix1[0].size() != matrix2[0].size()) {
+                throw std::logic_error("error size, must have same number of columns");
+            }
             res = matrix1;
             res.insert(res.end(), matrix2.begin(), matrix2.end());
         } else {
+            if(matrix1.size() != matrix2.size()) {
+                throw std::logic_error("error size, must have same number of rows");
+            }
             auto row = matrix1.size();
             auto col1 = matrix1[0].size(), col2 = matrix2[0].size();
             for(int i = 0; i < row; i++) {
@@ -249,6 +265,9 @@ namespace algebra {
     }
 
     Matrix ero_swap(const Matrix& matrix, std::size_t r1, std::size_t r2) {
+        if(matrix.size() <= r1 or matrix.size() <= r2) {
+            throw std::logic_error("error size, out of range");
+        }
         Matrix res(matrix);
         std::swap(res[r1], res[r2]);
         return res;
