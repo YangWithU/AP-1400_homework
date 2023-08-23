@@ -19,12 +19,12 @@ public:
     // get a pointer to a Client using its id.
     std::shared_ptr<Client> get_client(std::string id);
 
-    // return the wallet value of the client with username id.
-    double get_wallet(std::string id);
+    // returns the wallet of the client with username id.
+    double get_wallet(std::string id) const;
 
-    //
-    bool parse_trx(std::string trx, std::string sender, std::string receiver, double value);
-    bool add_pending_trx(std::string trx, std::string signature);
+    // parse
+    bool parse_trx(std::string trx, std::string &sender, std::string &receiver, double &value) const ;
+    bool add_pending_trx(std::string trx, std::string signature) const;
     size_t mine();
 private:
     // map each client to its wallet
