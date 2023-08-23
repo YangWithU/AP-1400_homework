@@ -24,10 +24,7 @@ std::string Client::sign(std::string txt) const {
 
 bool Client::transfer_money(std::string receiver, double value) {
     std::string trx_ = id + "-" + receiver + "-" + std::to_string(value);
-    if(server->add_pending_trx(trx_, sign(trx_))) {
-        return true;
-    }
-    return false;
+    return server->add_pending_trx(trx_, sign(trx_));
 }
 
 size_t Client::generate_nonce() {

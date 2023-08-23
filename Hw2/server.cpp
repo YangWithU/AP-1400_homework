@@ -46,7 +46,7 @@ double Server::get_wallet(std::string id) const {
 
 // use regex to divide trx
 bool Server::parse_trx(std::string trx, std::string &sender, std::string &receiver, double &value) {
-    std::regex pattern(R"(\b([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+\.[0-9]+)\b)");
+    std::regex pattern(R"(\b([\_a-zA-Z]+)-([\_a-zA-Z]+)-([0-9]+\.[0-9]+)\b)");
     std::smatch match;
     if(std::regex_match(trx, match, pattern)) {
         sender = match.str(1);
@@ -71,7 +71,7 @@ bool Server::add_pending_trx(std::string trx, std::string signature) const {
     }
     bool authentic = crypto::verifySignature(p_sender->get_publickey(), trx, signature);
     if(authentic and clients.at(p_sender) >= value_) {
-        pending_trxs.emplace_back(trx);
+        pending_trxs.push_back(trx);
         return true;
     }
     return false;

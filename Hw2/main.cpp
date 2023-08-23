@@ -16,17 +16,24 @@ int main(int argc, char **argv)
 {
     if (false) // make false to run unit-tests
     {
-        Server server_;
-        auto Alice = server_.add_client("aaalice");
-        auto Bob = server_.add_client("bbbob");
+//        Server server_;
+//        auto Alice = server_.add_client("aaalice");
+//        auto Bob = server_.add_client("bbbob");
+//
+//        std::string sd, rc;
+//        double cash;
+//
+//        Alice->transfer_money("bbbob", 1.14);
+//        show_pending_transactions();
+//        std::cout << Bob->get_wallet() << '\n';
+//        std::cout << Alice->get_wallet() << '\n';
 
-        std::string sd, rc;
-        double cash;
-
-        Alice->transfer_money("bbbob", 1.14);
+        Server server{};
+        auto bryan{server.add_client("bryan")};
+        auto clint{server.add_client("clint")};
+        bool valid{bryan->transfer_money("no_one", 0.5)};
+        if(!valid) std::cout << "no";
         show_pending_transactions();
-        std::cout << Bob->get_wallet() << '\n';
-        std::cout << Alice->get_wallet() << '\n';
     }
     else
     {
