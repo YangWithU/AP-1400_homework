@@ -7,6 +7,11 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <random>
+#include <chrono>
+#include <regex>
+
+extern std::vector<std::string> pending_trxs;
 
 class Client;
 class Server {
@@ -23,9 +28,11 @@ public:
     double get_wallet(std::string id) const;
 
     // parse
-    bool parse_trx(std::string trx, std::string &sender, std::string &receiver, double &value) const ;
-    bool add_pending_trx(std::string trx, std::string signature) const;
+    static bool parse_trx(std::string trx, std::string &sender, std::string &receiver, double &value);
+    bool add_pending_trx(std::string trx, std::string signature) const ;
     size_t mine();
+
+    friend void show_wallets(const  Server& server);
 private:
     // map each client to its wallet
     // k,v: clients<client, wallet>

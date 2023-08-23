@@ -1,23 +1,24 @@
 #include <iostream>
 #include <gtest/gtest.h>
+
 #include "client.h"
 #include "server.h"
 
-#include <chrono>
-#include <random>
+void  show_pending_transactions()
+{
+    std::cout  <<  std::string(20, '*') <<  std::endl;
+    for(const  auto& trx : pending_trxs)
+        std::cout << trx <<  std::endl;
+    std::cout  <<  std::string(20, '*') <<  std::endl;
+}
 
 int main(int argc, char **argv)
 {
-    if (true) // make false to run unit-tests
+    if (false) // make false to run unit-tests
     {
-        std::map<int, int> mp;
-        mp[114] = 514;
-        for(auto x : mp) {
-            if(x.first == 114) {
-                x.second -= 2;
-            }
-        }
-        std::cout << mp[114];
+        Server sv{};
+        Client c("sdf", sv);
+        std::cout << c.generate_nonce();
     }
     else
     {

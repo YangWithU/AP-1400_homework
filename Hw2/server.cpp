@@ -1,10 +1,6 @@
 #include "server.h"
 #include "client.h"
 
-#include <random>
-#include <chrono>
-#include <regex>
-
 // pending transaction
 std::vector<std::string> pending_trxs;
 
@@ -36,19 +32,20 @@ std::shared_ptr<Client> Server::get_client(std::string id) const {
             return x.first;
         }
     }
+    return nullptr;
 }
 
 double Server::get_wallet(std::string id) const {
-    for(auto &x : clients) {
-        if(x.first->get_id() == id) {
-            return x.second;
+    for(auto &[k, v]: clients) {
+        if(k->get_id() == id) {
+            return v;
         }
     }
     return 0;
 }
 
 // use regex to divide trx
-bool Server::parse_trx(std::string trx, std::string &sender, std::string &receiver, double &value) const {
+bool Server::parse_trx(std::string trx, std::string &sender, std::string &receiver, double &value) {
     std::regex pattern(R"(\b[a-zA-Z]+-[a-zA-Z]+-[0-9]+\.[0-9]+\b)");
     std::smatch match;
     if(std::regex_match(trx, match, pattern)) {
@@ -77,7 +74,32 @@ bool Server::add_pending_trx(std::string trx, std::string signature) const {
 }
 
 size_t Server::mine() {
-    return 0;
+    std::string mem_pool{};
+    for(auto &x : pending_trxs) {
+        mem_pool += x;
+    }
+    for(auto &[k, v] : clients) {
+        std::string res = mem_pool + std::to_string(k->generate_nonce());
+        res = crypto::sha256(res);
+        res = res.substr(0, 10);
+        int cnt = 0;
+        for(auto &x : res) {
+            if(x == '0') {
+                cnt++;
+            }
+        }
+        if(cnt >= 3) {
+            v += 6.25;
+        }
+        pending_trxs.clear();
+        break;
+    }
 }
 
-
+void  show_wallets(const  Server& server)
+{
+    std::cout << std::string(20, '*') << std::endl;
+    for(const auto& client: server.clients)
+        std::cout << client.first->get_id() <<  " : "  << client.second << std::endl;
+    std::cout << std::string(20, '*') << std::endl;
+}
