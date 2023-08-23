@@ -46,7 +46,7 @@ double Server::get_wallet(std::string id) const {
 
 // use regex to divide trx
 bool Server::parse_trx(std::string trx, std::string &sender, std::string &receiver, double &value) {
-    std::regex pattern(R"(\b[a-zA-Z]+-[a-zA-Z]+-[0-9]+\.[0-9]+\b)");
+    std::regex pattern(R"(\b([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+\.[0-9]+)\b)");
     std::smatch match;
     if(std::regex_match(trx, match, pattern)) {
         sender = match.str(1);
@@ -64,9 +64,13 @@ bool Server::add_pending_trx(std::string trx, std::string signature) const {
     std::string sender_, receiver_;
     double value_;
     parse_trx(trx, sender_, receiver_, value_);
-    auto p_client = get_client(sender_);
-    bool authentic = crypto::verifySignature(p_client->get_publickey(), trx, signature);
-    if(authentic and clients.at(p_client) >= value_) {
+    auto p_sender = get_client(sender_);
+    auto p_receiver = get_client(receiver_);
+    if(p_receiver == nullptr) {
+        return false;
+    }
+    bool authentic = crypto::verifySignature(p_sender->get_publickey(), trx, signature);
+    if(authentic and clients.at(p_sender) >= value_) {
         pending_trxs.emplace_back(trx);
         return true;
     }
@@ -96,7 +100,7 @@ size_t Server::mine() {
     }
 }
 
-void  show_wallets(const  Server& server)
+void  show_wallets(const Server& server)
 {
     std::cout << std::string(20, '*') << std::endl;
     for(const auto& client: server.clients)

@@ -32,7 +32,7 @@ public:
     bool add_pending_trx(std::string trx, std::string signature) const ;
     size_t mine();
 
-    friend void show_wallets(const  Server& server);
+    friend void show_wallets(const Server& server);
 private:
     // map each client to its wallet
     // k,v: clients<client, wallet>

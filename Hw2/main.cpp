@@ -16,9 +16,17 @@ int main(int argc, char **argv)
 {
     if (false) // make false to run unit-tests
     {
-        Server sv{};
-        Client c("sdf", sv);
-        std::cout << c.generate_nonce();
+        Server server_;
+        auto Alice = server_.add_client("aaalice");
+        auto Bob = server_.add_client("bbbob");
+
+        std::string sd, rc;
+        double cash;
+
+        Alice->transfer_money("bbbob", 1.14);
+        show_pending_transactions();
+        std::cout << Bob->get_wallet() << '\n';
+        std::cout << Alice->get_wallet() << '\n';
     }
     else
     {
