@@ -14,26 +14,25 @@ void  show_pending_transactions()
 
 int main(int argc, char **argv)
 {
-    if (false) // make false to run unit-tests
+    if (true) // make false to run unit-tests
     {
-//        Server server_;
-//        auto Alice = server_.add_client("aaalice");
-//        auto Bob = server_.add_client("bbbob");
-//
-//        std::string sd, rc;
-//        double cash;
-//
-//        Alice->transfer_money("bbbob", 1.14);
-//        show_pending_transactions();
-//        std::cout << Bob->get_wallet() << '\n';
-//        std::cout << Alice->get_wallet() << '\n';
+        Server server_{};
+        auto Alice = server_.add_client("aaalice");
+        auto Bob = server_.add_client("bbbob");
 
-        Server server{};
-        auto bryan{server.add_client("bryan")};
-        auto clint{server.add_client("clint")};
-        bool valid{bryan->transfer_money("no_one", 0.5)};
-        if(!valid) std::cout << "no";
+        Alice->transfer_money("bbbob", 1.14);
         show_pending_transactions();
+
+        std::string mempool{};
+        for(auto &x : pending_trxs) {
+            mempool += x;
+        }
+
+        std::cout << '\n';
+        show_wallets(server_);
+        auto nonce_ = server_.mine();
+        std::cout << '\n';
+        show_wallets(server_);
     }
     else
     {

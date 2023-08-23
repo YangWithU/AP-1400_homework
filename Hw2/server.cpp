@@ -77,26 +77,32 @@ bool Server::add_pending_trx(std::string trx, std::string signature) const {
     return false;
 }
 
+
+// winner gets transaction, and losers got nothing!
 size_t Server::mine() {
     std::string mem_pool{};
     for(auto &x : pending_trxs) {
         mem_pool += x;
     }
-    for(auto &[k, v] : clients) {
-        std::string res = mem_pool + std::to_string(k->generate_nonce());
-        res = crypto::sha256(res);
-        res = res.substr(0, 10);
-        int cnt = 0;
-        for(auto &x : res) {
-            if(x == '0') {
-                cnt++;
+    while (true) {
+        for (auto &[k, v]: clients) {
+            std::size_t nonce_ = k->generate_nonce();
+            std::string res = mem_pool + std::to_string(nonce_);
+            res = crypto::sha256(res);
+            res = res.substr(0, 10);
+            if (res.find("000") != std::string::npos) {
+                v += 6.25;
+                for (auto &cur_trx: pending_trxs) {
+                    std::string sender_, receiver_;
+                    double value_;
+                    parse_trx(cur_trx, sender_, receiver_, value_);
+                    clients[get_client(sender_)] -= value_;
+                    clients[get_client(receiver_)] += value_;
+                }
+                pending_trxs.clear();
+                return nonce_;
             }
         }
-        if(cnt >= 3) {
-            v += 6.25;
-        }
-        pending_trxs.clear();
-        break;
     }
 }
 

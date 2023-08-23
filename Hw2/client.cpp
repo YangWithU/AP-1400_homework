@@ -32,6 +32,3 @@ size_t Client::generate_nonce() {
     std::uniform_int_distribution<std::size_t> rnd(0, std::numeric_limits<std::size_t>::max());
     return rnd(gen);
 }
-
-
-
