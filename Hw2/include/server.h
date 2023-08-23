@@ -17,7 +17,7 @@ public:
     std::shared_ptr<Client> add_client(std::string id);
 
     // get a pointer to a Client using its id.
-    std::shared_ptr<Client> get_client(std::string id);
+    std::shared_ptr<Client> get_client(std::string id) const;
 
     // returns the wallet of the client with username id.
     double get_wallet(std::string id) const;

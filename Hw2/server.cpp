@@ -30,7 +30,7 @@ std::shared_ptr<Client> Server::add_client(std::string id) {
     return cli_ptr;
 }
 
-std::shared_ptr<Client> Server::get_client(std::string id) {
+std::shared_ptr<Client> Server::get_client(std::string id) const {
     for(auto &x : clients) {
         if(x.first->get_id() == id) {
             return x.first;
@@ -67,26 +67,17 @@ bool Server::add_pending_trx(std::string trx, std::string signature) const {
     std::string sender_, receiver_;
     double value_;
     parse_trx(trx, sender_, receiver_, value_);
-    std::string public_key_;
-    double balance;
-    for(auto &x : clients) {
-        if(x.first->get_id()== sender_) {
-            public_key_ = x.first->get_publickey();
-            balance = x.first->get_wallet();
-            if(balance >= value_) {
-                x.second -= value_;
-            } else {
-                return false;
-            }
-            break;
-        }
-    }
-    bool authentic = crypto::verifySignature(public_key_, trx, signature);
-    if(authentic) {
+    auto p_client = get_client(sender_);
+    bool authentic = crypto::verifySignature(p_client->get_publickey(), trx, signature);
+    if(authentic and clients.at(p_client) >= value_) {
         pending_trxs.emplace_back(trx);
         return true;
     }
     return false;
+}
+
+size_t Server::mine() {
+    return 0;
 }
 
 
