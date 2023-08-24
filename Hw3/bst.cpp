@@ -112,20 +112,37 @@ bool BST::add_node(int value) {
     return true;
 }
 
+size_t BST::length() {
+    std::size_t cnt = 0;
+    bfs([&cnt](BST::Node*& node){
+        cnt++;
+    });
+    return cnt;
+}
+
+// when address == nullptr, we wanna output "0"
+// so consider output std::stringstream
+std::ostream& operator<<(std::ostream& os, BST& bst) {
+    std::cout << std::string(80, '*') << '\n';
+    bst.bfs([](BST::Node*& node) {
+        std::stringstream ssl, ssr;
+        if(node->left) ssl << node->left;
+        else ssl << "0";
+        if(node->right) ssr << node->right;
+        else ssr << "0";
+
+        std::cout << std::left << std::setw(16) << node << "=> "
+        << "value:" << std::setw(16) << node->value
+        << "left:" << std::setw(16) << ssl.str()
+        << "right:" << std::setw(16) << ssr.str()
+        << '\n';
+    });
+    std::cout << std::left << "binary search tree size: " << bst.length() << '\n';
+    std::cout << std::string(80, '*') << std::endl;
+    return os;
+}
+
 BST::Node **BST::find_node(int value) {
     return nullptr;
 }
-
-
-size_t BST::length() {
-    return 0;
-}
-
-
-
-
-
-
-
-
 

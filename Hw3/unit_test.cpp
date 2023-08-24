@@ -88,7 +88,7 @@ TEST(HW3Test, TEST7) {
     EXPECT_EQ(bst.get_root()->left->value, 5);
     EXPECT_EQ(bst.get_root()->right->value, 20);
 }
-/*
+
 TEST(HW3Test, TEST8) {
     BST bst{};
     bst.add_node(25);
@@ -146,7 +146,7 @@ TEST(HW3Test, TEST11) {
     std::cout << "PRINT A BINARY SEARCH TREE" << std::endl;
     std::cout << bst << std::endl;
 }
-
+/*
 TEST(HW3Test, TEST12) {
     BST bst{};
     bst.add_node(25);

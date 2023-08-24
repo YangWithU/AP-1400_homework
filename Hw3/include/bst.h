@@ -4,6 +4,7 @@
 #include <functional>
 #include <queue>
 #include <iostream>
+#include <iomanip>
 
 class BST {
 public:
@@ -49,5 +50,6 @@ bool operator<=(int v, const BST::Node& node);
 bool operator>(int v, const BST::Node& node);
 bool operator>=(int v, const BST::Node& node);
 
+std::ostream& operator<<(std::ostream& os, BST& bst);
 
 #endif //BST_H
