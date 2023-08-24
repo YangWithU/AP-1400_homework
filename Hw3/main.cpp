@@ -6,8 +6,12 @@ int main(int argc, char **argv)
 {
     if (false) // make false to run unit-tests
     {
-        // debug section
+        BST bst{};
+        bst.add_node(10);
+        bst.add_node(20);
+        bst.add_node(5);
 
+        std::cout << bst.get_root()->right->value;
     }
     else
     {
