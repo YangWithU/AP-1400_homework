@@ -3,7 +3,7 @@
 #include "gmock/gmock.h"
 #include "bst.h"
 
-/*
+
 TEST(HW3Test, TEST1) {
 
     BST::Node left{10, nullptr, nullptr};
@@ -38,9 +38,9 @@ TEST(HW3Test, TEST4) {
     BST::Node right{10, nullptr, nullptr};
     BST::Node node{10, &left, &right};
 
-    std::cout << "adress of node: " << &node << std::endl;
-    std::cout << "adress of left: " << &left << std::endl;
-    std::cout << "adress of right: " << &right << std::endl;
+    std::cout << "address of node: " << &node << std::endl;
+    std::cout << "address of left: " << &left << std::endl;
+    std::cout << "address of right: " << &right << std::endl;
     std::cout << std::string(80, '*') << std::endl;
     std::cout << "PRINT A NODE" << std::endl;
     std::cout << node << std::endl;
@@ -88,7 +88,7 @@ TEST(HW3Test, TEST7) {
     EXPECT_EQ(bst.get_root()->left->value, 5);
     EXPECT_EQ(bst.get_root()->right->value, 20);
 }
-
+/*
 TEST(HW3Test, TEST8) {
     BST bst{};
     bst.add_node(25);
@@ -490,7 +490,7 @@ TEST(HW3Test, TEST31) {
     for(size_t i{}; i < values1.size(); i++)
         EXPECT_EQ(values2[i], values1[i]-1);    
 }
-*/
 
+*/
 
 
