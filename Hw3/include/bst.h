@@ -11,6 +11,10 @@ public:
     class Node;
 
     BST();
+    BST(std::initializer_list<int>);
+    BST(const BST&);
+    BST(BST&&) noexcept;
+    ~BST();
 
     Node*& get_root();
     void bfs(std::function<void(Node*& node)> func);
@@ -36,7 +40,7 @@ public:
     Node* right;
 };
 
-// normal way: friend ostream& operator <<(...)
+// normal way: friend ostream& operator <<(...){}
 // can't add member func, so overload global '<<' instead
 std::ostream& operator<<(std::ostream& os, const BST::Node& node);
 bool operator<(const BST::Node& node, int v);

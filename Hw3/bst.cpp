@@ -56,14 +56,47 @@ bool operator==(int v, const BST::Node& node) {
 }
 
 BST::BST() {
-    root = nullptr;
+    this->root = nullptr;
+}
+
+BST::BST(std::initializer_list<int> il) {
+    this->root = nullptr;
+    for(auto x : il) {
+        add_node(x);
+    }
+}
+
+static BST::Node* trv(BST::Node* u) {
+    if(u == nullptr) return nullptr;
+    auto v = new BST::Node(u->value, nullptr, nullptr);
+    v->left = trv(u->left);
+    v->right = trv(u->right);
+    return v;
+}
+
+BST::BST(const BST& rhs) {
+    if(rhs.root == nullptr) this->root = nullptr;
+    else this->root = trv(rhs.root);
+}
+
+BST::BST(BST&& rhs) noexcept {
+    this->root = rhs.root;
+    rhs.root = nullptr;
+}
+
+BST::~BST() {
+    std::vector<Node*> nodes;
+    bfs([&nodes](BST::Node*& node){nodes.push_back(node);});
+    for(auto& node: nodes)
+        delete node;
 }
 
 BST::Node*& BST::get_root() {
-    return root;
+    return this->root;
 }
 
-void BST::bfs(std::function<void(Node *&)> func) {
+void BST::bfs(std::function<void(Node*&)> func) {
+    if(this->root == nullptr) return;
     std::queue<Node*> q;
     q.push(get_root());
     while (!q.empty()) {
@@ -142,7 +175,69 @@ std::ostream& operator<<(std::ostream& os, BST& bst) {
     return os;
 }
 
-BST::Node **BST::find_node(int value) {
-    return nullptr;
+BST::Node** BST::find_node(int value) {
+    auto cur_node = get_root();
+    while (cur_node) {
+        if(value < cur_node->value) {
+            cur_node = cur_node->left;
+        } else if(value > cur_node->value) {
+            cur_node = cur_node->right;
+        } else {
+            break;
+        }
+    }
+    if(cur_node == nullptr) {
+        return nullptr;
+    }
+    auto res = new Node*(cur_node);
+    return res;
 }
+
+BST::Node** BST::find_parrent(int value) {
+    auto cur = get_root();
+    Node* prev = nullptr;
+    while (cur) {
+        if(value < cur->value) {
+            prev = cur;
+            cur = cur->left;
+        } else if(value > cur->value) {
+            prev = cur;
+            cur = cur->right;
+        } else {
+            break;
+        }
+    }
+    if(cur == nullptr) {
+        return nullptr;
+    }
+    auto res = new Node*(prev);
+    return res;
+}
+
+// This is not real successor! confusing!
+BST::Node** BST::find_successor(int value) {
+    auto res = find_node(value);
+    if (res == nullptr or (*res)->left == nullptr) {
+        return nullptr;
+    }
+    auto cur = *res;
+    cur = cur->left;
+    while (cur->right) {
+        cur = cur->right;
+    }
+    return new Node *(cur);
+}
+
+bool BST::delete_node(int value) {
+    auto cur = find_node(value);
+    auto succ = find_successor(value);
+    if(cur == nullptr or succ == nullptr) {
+        return false;
+    }
+    (*cur) = (*succ);
+    //delete succ;
+    return true;
+}
+
+
 
