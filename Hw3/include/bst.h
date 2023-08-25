@@ -14,6 +14,10 @@ public:
     BST(std::initializer_list<int>);
     BST(const BST&);
     BST(BST&&) noexcept;
+
+    BST& operator=(const BST&);
+    BST& operator=(BST&&) noexcept;
+
     ~BST();
 
     Node*& get_root();
@@ -21,7 +25,7 @@ public:
     size_t length();
     bool add_node(int value);
     Node** find_node(int value);
-    Node** find_parrent(int value);
+    Node** find_parent(int value);
     Node** find_successor(int value);
     bool delete_node(int value);
 
@@ -55,5 +59,11 @@ bool operator>(int v, const BST::Node& node);
 bool operator>=(int v, const BST::Node& node);
 
 std::ostream& operator<<(std::ostream& os, BST& bst);
+
+// add first, then call
+BST& operator++(BST&);
+
+// call first, increase second
+BST operator++(BST&, int);
 
 #endif //BST_H

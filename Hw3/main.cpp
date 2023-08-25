@@ -4,9 +4,10 @@
 
 int main(int argc, char **argv)
 {
-    if (false) // make false to run unit-tests
+    if (true) // make false to run unit-tests
     {
-        BST bst;
+        BST bst{};
+        BST::Node node{};
     }
     else
     {

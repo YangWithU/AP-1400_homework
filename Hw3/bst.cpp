@@ -84,11 +84,38 @@ BST::BST(BST&& rhs) noexcept {
     rhs.root = nullptr;
 }
 
+BST& BST::operator=(const BST& rhs) {
+    if(this == &rhs) return *this;
+    this->root = trv(rhs.root);
+    return *this;
+}
+
+BST& BST::operator=(BST&& rhs) noexcept {
+    this->root = rhs.root;
+    rhs.root = nullptr;
+    return *this;
+}
+
 BST::~BST() {
     std::vector<Node*> nodes;
     bfs([&nodes](BST::Node*& node){nodes.push_back(node);});
     for(auto& node: nodes)
         delete node;
+}
+
+BST& operator++(BST& u) {
+    u.bfs([](BST::Node*& node) {
+        node->value += 1;
+    });
+    return u;
+}
+
+BST operator++(BST& u, int) {
+    BST t(u);
+    u.bfs([](BST::Node*& node) {
+        node->value += 1;
+    });
+    return t;
 }
 
 BST::Node*& BST::get_root() {
@@ -193,7 +220,7 @@ BST::Node** BST::find_node(int value) {
     return res;
 }
 
-BST::Node** BST::find_parrent(int value) {
+BST::Node** BST::find_parent(int value) {
     auto cur = get_root();
     Node* prev = nullptr;
     while (cur) {
@@ -230,14 +257,53 @@ BST::Node** BST::find_successor(int value) {
 
 bool BST::delete_node(int value) {
     auto cur = find_node(value);
-    auto succ = find_successor(value);
-    if(cur == nullptr or succ == nullptr) {
+    auto parent = find_parent(value);
+    if(cur == nullptr) {
         return false;
     }
-    (*cur) = (*succ);
-    //delete succ;
+    if((*cur)->left == nullptr and (*cur)->right == nullptr) {
+        if((*cur) == get_root()) {
+            this->root = nullptr;
+        } else {
+            if((*cur)->value < (*parent)->value) {
+                (*parent)->left = nullptr;
+            } else {
+                (*parent)->right = nullptr;
+            }
+        }
+    } else if((*cur)->left != nullptr and (*cur)->right != nullptr) {
+        auto succ = find_successor(value);
+        Node* tmp = new Node{(*succ)->value, (*cur)->left, (*cur)->right};
+        delete_node((*succ)->value);
+        if((*cur) == get_root()) {
+            tmp->left = this->root->left;
+            tmp->right = this->root->right;
+            this->root = tmp;
+        } else {
+            if((*parent)->left == (*cur)) {
+                (*parent)->left = tmp;
+            } else {
+                (*parent)->right = tmp;
+            }
+        }
+    } else {
+        Node* tmp = nullptr;
+        if((*cur)->left) {
+            tmp = (*cur)->left;
+        } else {
+            tmp = (*cur)->right;
+        }
+        if((*cur) == get_root()) {
+            tmp->left = this->root->left;
+            tmp->right = this->root->right;
+            this->root = tmp;
+        } else {
+            if((*parent)->left == (*cur)) {
+                (*parent)->left = tmp;
+            } else {
+                (*parent)->right = tmp;
+            }
+        }
+    }
     return true;
 }
-
-
-
