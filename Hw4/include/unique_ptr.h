@@ -3,17 +3,26 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 
 template <typename T>
 class UniquePtr {
 public:
-    UniquePtr(T* p);
+    explicit UniquePtr(T* p);
     UniquePtr();
     ~UniquePtr();
 
     UniquePtr(const UniquePtr&) = delete;
     UniquePtr(UniquePtr&&) noexcept;
+
+    T& operator*() const;
+    T* operator->() const;
+    explicit operator bool();
+
     T* get();
+    void reset();
+    void reset(T*);
+    T* release();
 
 private:
     T* base_ptr;
@@ -36,8 +45,42 @@ UniquePtr<T>::UniquePtr(UniquePtr<T> && rhs) noexcept : base_ptr(rhs.base_ptr) {
 }
 
 template <typename T>
+T& UniquePtr<T>::operator*() const {
+    return *base_ptr;
+}
+
+template <typename T>
+T* UniquePtr<T>::operator->() const {
+    return base_ptr;
+}
+
+template <typename T>
+UniquePtr<T>::operator bool() {
+    return base_ptr != nullptr;
+}
+
+template <typename T>
 T* UniquePtr<T>::get() {
     return base_ptr;
+}
+
+template <typename T>
+void UniquePtr<T>::reset() {
+    delete base_ptr;
+    base_ptr = nullptr;
+}
+
+template <typename T>
+void UniquePtr<T>::reset(T *rhs) {
+    delete base_ptr;
+    base_ptr = rhs;
+}
+
+template <typename T>
+T* UniquePtr<T>::release() {
+    T* tmp = base_ptr;
+    base_ptr = nullptr;
+    return tmp;
 }
 
 // using perfect forwarding to properly forward all parameters
