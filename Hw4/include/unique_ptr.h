@@ -76,6 +76,7 @@ void UniquePtr<T>::reset(T *rhs) {
     base_ptr = rhs;
 }
 
+// transfer access
 template <typename T>
 T* UniquePtr<T>::release() {
     T* tmp = base_ptr;
