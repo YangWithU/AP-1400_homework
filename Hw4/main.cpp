@@ -7,14 +7,20 @@ int main(int argc, char **argv)
 {
     if (false) // make false to run unit-tests
     {
-        SharedPtr<int> ptr1{make_shared<int>(10)};
-        SharedPtr<int> ptr2(ptr1);
-        EXPECT_EQ(*ptr1, 10);
-        EXPECT_EQ(*ptr2, 10);
-        std::cout << *ptr1 << '\n';
-        EXPECT_EQ(ptr1.get(), ptr2.get());
-        EXPECT_EQ(ptr1.use_count(), 2);
-        EXPECT_EQ(ptr2.use_count(), 2);
+        auto p1 = make_shared<std::string>("hello");
+        p1 = p1;
+        auto p2 = make_shared<std::string>("world");
+        p2 = p1;
+        std::cout << *p2 << '\n';
+//        auto p1 = std::make_shared<std::string>("hello");
+//        std::cout << p1.use_count() << '\n';
+//        p1 = p1;
+//        std::cout << p1.use_count() << '\n';
+//        auto p2 = std::make_shared<std::string>("world");
+//        std::cout << "p2 use before: " << p2.use_count() << '\n';
+//        p2 = p1;
+//        std::cout << "p2 use af: " << p2.use_count() << '\n';
+//        std::cout << "p1 use af: " << p1.use_count() << '\n';
     }
     else
     {
