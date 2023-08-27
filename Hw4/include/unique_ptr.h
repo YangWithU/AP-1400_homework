@@ -18,6 +18,7 @@ public:
     T& operator*() const;
     T* operator->() const;
     explicit operator bool();
+    UniquePtr operator=(const UniquePtr&) = delete;
 
     T* get();
     void reset();
