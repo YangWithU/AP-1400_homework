@@ -5,13 +5,34 @@
 #include "espresso_based.h"
 #include "cappuccino.h"
 #include "mocha.h"
+#include <iostream>
+
+class A {
+public:
+    virtual void vfunc() {
+        std::cout << "base func called!\n";
+    }
+    virtual void pureVfunc() = 0;
+};
+
+class B : public A {
+public:
+    void vfunc() {
+        std::cout << "derived func called!\n";
+    }
+    void pureVfunc() {
+        std::cout << "pure v derived func called\n";
+    }
+};
 
 int main(int argc, char **argv)
 {
-    if (false) // make false to run unit-tests
+    if (true) // make false to run unit-tests
     {
-        // debug section
-        
+        A* bp = new A();
+        bp->pureVfunc();
+        bp->vfunc();
+
     }
     else
     {
