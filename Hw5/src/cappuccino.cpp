@@ -59,3 +59,10 @@ std::vector<Ingredient *> &Cappuccino::get_side_items() {
     return this->side_items;
 }
 
+void Cappuccino::brew() {
+    std::cout << "brewing Cappuccino:" << std::endl;
+    for(auto &x : ingredients) {
+        std::cout << x << " ";
+    }
+    std::cout << "Cappuccino Done!" << std::endl;
+}

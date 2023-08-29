@@ -8,7 +8,7 @@ public:
     virtual std::string get_name() = 0;
     virtual double price() = 0;
 
-    void brew();
+    virtual void brew() = 0;
     EspressoBased& operator=(const EspressoBased& esp) = delete;
     std::vector<Ingredient*>& get_ingredients();
 

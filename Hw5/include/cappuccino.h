@@ -9,11 +9,12 @@ class Cappuccino : public EspressoBased {
 public:
     Cappuccino();
     Cappuccino(const Cappuccino& cap);
-    ~Cappuccino();
+    ~Cappuccino() override;
     Cappuccino& operator=(const Cappuccino& cap);
 
     std::string get_name() override;
-    virtual double price();
+    double price() override;
+    void brew() override;
 
     void add_side_item(Ingredient* side);
     std::vector<Ingredient*>& get_side_items();
