@@ -9,14 +9,15 @@ public:
     virtual double price() = 0;
 
     void brew();
+    EspressoBased& operator=(const EspressoBased& esp) = delete;
     std::vector<Ingredient*>& get_ingredients();
 
-    ~EspressoBased();
+    virtual ~EspressoBased();
 
 protected:
     EspressoBased();
     EspressoBased(const EspressoBased& esp);
-    void operator=(const EspressoBased& esp);
+    explicit EspressoBased(std::string);
 
     std::vector<Ingredient*> ingredients;
     std::string name;

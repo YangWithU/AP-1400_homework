@@ -8,8 +8,14 @@ EspressoBased::EspressoBased(const EspressoBased &esp) {
     }
 }
 
+EspressoBased::EspressoBased(std::string s) : name(s) {}
+
 EspressoBased::~EspressoBased() {
     for(const auto& i : ingredients)
         delete i;
     ingredients.clear();
+}
+
+std::vector<Ingredient*> &EspressoBased::get_ingredients() {
+    return this->ingredients;
 }
