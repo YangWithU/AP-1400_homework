@@ -10,7 +10,10 @@ int main(int argc, char **argv)
 {
     if (false) // make false to run unit-tests
     {
-
+        auto res = q2::read_file("lung_cancer.csv");
+        for(const auto& x : res) {
+            std::cout << x.name << "\n";
+        }
     }
     else
     {
