@@ -10,7 +10,6 @@ int main(int argc, char **argv)
 {
     if (false) // make false to run unit-tests
     {
-        // debug section
 
     }
     else

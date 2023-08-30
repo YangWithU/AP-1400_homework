@@ -8,7 +8,7 @@
 #include "q3.h"
 #include "q4.h"
 
-/*
+
 TEST(HW6Test, TEST1) {
     auto min1 = q1::gradient_descent(0.01, 0.1, cos);
     EXPECT_NEAR(min1, 3.14, 0.1);
@@ -30,7 +30,7 @@ TEST(HW6Test, TEST3) {
     auto min = q1::gradient_descent(0.01, 0.01, Func{});
     EXPECT_NEAR(min, 3.14, 0.01);
 }
-
+/*
 TEST(HW6Test, TEST4) {
     struct Func
     {

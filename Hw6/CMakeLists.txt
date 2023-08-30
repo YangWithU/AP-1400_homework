@@ -7,11 +7,11 @@ find_package(GTest REQUIRED)
 
 include_directories(include/)
 
-add_executable(Hw6
+add_executable(main
         src/main.cpp
         src/unit_test.cpp
 )
-target_link_libraries(Hw6
+target_link_libraries(main
         GTest::GTest
         GTest::Main
 )
