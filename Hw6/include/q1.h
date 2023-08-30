@@ -20,6 +20,12 @@ namespace q1 {
         }
         return cur;
     }
+
+    template<typename T, class Func>
+    inline double gradient_descent(T start_, T step_) {
+        return gradient_descent(start_, step_, Func());
+    }
+
 }
 
 
