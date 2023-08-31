@@ -10,10 +10,12 @@ int main(int argc, char **argv)
 {
     if (false) // make false to run unit-tests
     {
-        auto res = q2::read_file("lung_cancer.csv");
-        for(const auto& x : res) {
-            std::cout << x.name << "\n";
+        auto flights = q3::gather_flights("flights.txt");
+        while (!flights.empty()) {
+            std::cout << flights.top().flight_number << '\n';
+            flights.pop();
         }
+
     }
     else
     {
