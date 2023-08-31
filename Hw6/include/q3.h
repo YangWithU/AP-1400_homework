@@ -65,17 +65,6 @@ namespace q3 {
             }
             size_t price_ = std::stoi(extracted[4]);
 
-//            size_t connect = std::stoi(p3);
-//
-//            std::istringstream buf_time(p4);
-//            size_t con_time = 0;
-//            std::string tmp;
-//            while (std::getline(buf_time, tmp, ',')) {
-//                con_time += std::stoi(tmp.substr(0, tmp.find('h'))) * 60 +
-//                            std::stoi(tmp.substr(tmp.find('h') + 1, tmp.find('m') - tmp.find('h')));
-//            }
-//            size_t price = std::stoi(p5);
-//
             flights.push({extracted[0], dur, connection, tot, price_});
         }
         return flights;
